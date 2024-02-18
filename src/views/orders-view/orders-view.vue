@@ -22,10 +22,10 @@
             {{ item.client_fullName }}
           </UiTableItem>
           <UiTableItem>
-            {{ item.product_title }}
+            {{ item.product.title }}
           </UiTableItem>
           <UiTableItem>
-            {{ item.price }}
+            {{ item.product.price }}
           </UiTableItem>
         </template>
       </UiTable>
@@ -45,7 +45,7 @@
     >
       <p>
         Вы действительно хотите удалить
-        <strong>"{{ selectedOrder?.product_title }}"</strong> ?
+        <strong>"{{ selectedOrder?.product.title }}"</strong> ?
       </p>
     </UiModal>
   </main>
@@ -57,15 +57,15 @@ import UiTableItem from '@/components/ui/ui-table-item/ui-table-item.vue'
 import UiSpinner from '@/components/ui/ui-spinner.vue'
 import AddOrder from './components/add-order/add-order.vue'
 import UpdateOrder from './components/update-order/update-order.vue'
-import type { IOrder } from './orders-view.types'
+import type { IGetOrderResponse } from './orders-view.types'
 import UiModal from '@/components/ui/ui-modal/ui-modal.vue'
 import { deleteOrderRequest, getOrdersRequest } from '@/infrastructure/orders'
 
 const loading = ref(false)
 const deleteLoading = ref(false)
-const orders = ref<IOrder[]>([])
+const orders = ref<IGetOrderResponse[]>([])
 const headerTitles = ['Дата', 'Клиент', 'Продукт', 'Цена']
-const selectedOrder = ref<IOrder>()
+const selectedOrder = ref<IGetOrderResponse | null>()
 const updateModal = ref(false)
 const deleteModal = ref(false)
 
@@ -81,12 +81,12 @@ const getOrdersInfo = async () => {
   }
 }
 
-const updateUserHandler = (user: IOrder) => {
+const updateUserHandler = (user: IGetOrderResponse) => {
   selectedOrder.value = user
   updateModal.value = true
 }
 
-const deleteUserHandler = (user: IOrder) => {
+const deleteUserHandler = (user: IGetOrderResponse) => {
   selectedOrder.value = user
   deleteModal.value = true
 }

@@ -26,16 +26,16 @@
     />
     <UiInput
       class="form-element"
-      v-model="newOrder.product_title"
-      :is-error="isSubmitted && v$.product_title.$invalid"
+      v-model="newOrder.product.title"
+      :is-error="isSubmitted && v$.product.title.$invalid"
       errorText="Обязательное поле"
       label="Наименование товара"
       placeholder="MackBook"
     />
     <UiInput
       class="form-element"
-      v-model="newOrder.price"
-      :is-error="isSubmitted && v$.price.$invalid"
+      v-model="newOrder.product.price"
+      :is-error="isSubmitted && v$.product.price.$invalid"
       errorText="Обязательное поле"
       label="Цена"
       placeholder="20000"
@@ -49,15 +49,14 @@ import UiInput from '@/components/ui/ui-input/ui-input.vue'
 import { required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { EmitEvents } from './update-order.types'
-import type { IOrder } from '@/views/orders-view/orders-view.types'
+import type { IGetOrderResponse, IOrder } from '@/views/orders-view/orders-view.types'
 import { updateOrderRequest } from '@/infrastructure/orders'
 
 const emit = defineEmits([EmitEvents.Updated, EmitEvents.Cancel])
+const props = defineProps<{ order: IGetOrderResponse | null; modal: boolean }>()
 
-const props = defineProps({ order: Object, modal: Boolean })
-
-const modalState = ref()
-const orderCopy = ref<IOrder>()
+const modalState = ref(false)
+const orderCopy = ref<IGetOrderResponse>()
 
 const loading = ref(false)
 const isSubmitted = ref(false)
@@ -65,15 +64,19 @@ const isSubmitted = ref(false)
 const newOrder = reactive<IOrder>({
   created_date: '',
   client_fullName: '',
-  product_title: '',
-  price: ''
+  product: {
+    title: '',
+    price: ''
+  }
 })
 
 const rules = computed(() => ({
   created_date: { required },
   client_fullName: { required },
-  product_title: { required },
-  price: { required }
+  product: {
+    title: { required },
+    price: { required }
+  }
 }))
 
 function cancel() {
@@ -86,7 +89,8 @@ function updateOrder() {
     return
   }
   loading.value = true
-  updateOrderRequest(orderCopy.value.id, newOrder)
+  const orderId = orderCopy.value?.id || ''
+  updateOrderRequest(orderId, newOrder)
     .then(() => {
       emit(EmitEvents.Updated)
       cancel()
@@ -102,10 +106,10 @@ const fillUserInfo = () => {
   modalState.value = JSON.parse(JSON.stringify(props.modal))
   if (!props.order) return
   orderCopy.value = JSON.parse(JSON.stringify(props.order))
-  newOrder.created_date = orderCopy.value.created_date
-  newOrder.client_fullName = orderCopy.value.client_fullName
-  newOrder.product_title = orderCopy.value.product_title
-  newOrder.price = orderCopy.value.price
+  newOrder.created_date = orderCopy.value?.created_date || ''
+  newOrder.client_fullName = orderCopy.value?.client_fullName || ''
+  newOrder.product.title = orderCopy.value?.product?.title || ''
+  newOrder.product.price = orderCopy.value?.product?.price || ''
 }
 
 watch(
@@ -119,4 +123,4 @@ watch(
 const v$ = useVuelidate(rules, newOrder)
 </script>
 
-<style scoped lang="sass" src="../../orders-view.sass"></style>
+<style scoped lang="sass" src="../../orders-view.sass" />

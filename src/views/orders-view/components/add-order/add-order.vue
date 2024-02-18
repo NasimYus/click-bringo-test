@@ -28,16 +28,16 @@
 
     <UiInput
       class="form-element"
-      v-model="newOrder.product_title"
-      :is-error="isSubmitted && v$.product_title.$invalid"
+      v-model="newOrder.product.title"
+      :is-error="isSubmitted && v$.product.title.$invalid"
       errorText="Обязательное поле"
       label="Наименование товара"
       placeholder="MackBook"
     />
     <UiInput
       class="form-element"
-      v-model="newOrder.price"
-      :is-error="isSubmitted && v$.price.$invalid"
+      v-model="newOrder.product.price"
+      :is-error="isSubmitted && v$.product.price.$invalid"
       errorText="Обязательное поле"
       label="Цена"
       placeholder="20000"
@@ -63,15 +63,19 @@ const isSubmitted = ref(false)
 const newOrder = reactive<IOrder>({
   created_date: '',
   client_fullName: '',
-  product_title: '',
-  price: ''
+  product: {
+    title: '',
+    price: ''
+  }
 })
 
 const rules = computed(() => ({
   created_date: { required },
   client_fullName: { required },
-  product_title: { required },
-  price: { required }
+  product: {
+    title: { required },
+    price: { required }
+  }
 }))
 
 const createOrder = () => {
@@ -95,8 +99,8 @@ const createOrder = () => {
 const cancel = () => {
   newOrder.created_date = ''
   newOrder.client_fullName = ''
-  newOrder.product_title = ''
-  newOrder.price = ''
+  newOrder.product.title = ''
+  newOrder.product.price = ''
   modal.value = false
 }
 

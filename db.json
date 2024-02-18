@@ -10,18 +10,31 @@
   ],
   "orders": [
     {
-      "id": "1",
-      "client_fullName": "Юсупов Насим Абдусалимович",
-      "created_date": "01.02.2024",
-      "product_title": "Apple watch",
-      "price": "200 0000"
-    },
-    {
       "created_date": "2024-02-07",
       "client_fullName": "mr Jeck",
-      "product_title": "JeckBook",
-      "price": "200 000",
+      "product": {
+        "title": "JeckBook",
+        "price": "200 000"
+      },
       "id": "c70f"
+    },
+    {
+      "id": "ec57",
+      "created_date": "2024-02-08",
+      "client_fullName": "НАсим",
+      "product": {
+        "title": "ыва выа",
+        "price": "200 000"
+      }
+    },
+    {
+      "id": "0634",
+      "created_date": "2024-02-01",
+      "client_fullName": "Sipehr",
+      "product": {
+        "title": "ыва выа",
+        "price": "200 000"
+      }
     }
-  ],
+  ]
 }

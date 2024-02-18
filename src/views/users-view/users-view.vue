@@ -58,14 +58,14 @@ import UiTableItem from '@/components/ui/ui-table-item/ui-table-item.vue'
 import UiSpinner from '@/components/ui/ui-spinner.vue'
 import AddUser from '@/views/users-view/components/add-user/add-user.vue'
 import UpdateUser from '@/views/users-view/components/update-user/update-user.vue'
-import type { IUser } from '@/views/users-view/users-view.types'
+import type { IGetUserResponse } from '@/views/users-view/users-view.types'
 import UiModal from '@/components/ui/ui-modal/ui-modal.vue'
 
+const users = ref<IGetUserResponse[]>([])
+const headerTitles = ['ФИО', 'Телефон', 'Дата рождения', 'Адрес']
+const selectedUser = ref<IGetUserResponse | null>(null)
 const loading = ref(false)
 const deleteLoading = ref(false)
-const users = ref<IUser[]>([])
-const headerTitles = ['ФИО', 'Телефон', 'Дата рождения', 'Адрес']
-const selectedUser = ref<IUser>()
 const updateModal = ref(false)
 const deleteModal = ref(false)
 
@@ -81,12 +81,12 @@ const getUsersInfo = async () => {
   }
 }
 
-const updateUserHandler = (user: IUser) => {
+const updateUserHandler = (user: IGetUserResponse) => {
   selectedUser.value = user
   updateModal.value = true
 }
 
-const deleteUserHandler = (user: IUser) => {
+const deleteUserHandler = (user: IGetUserResponse) => {
   selectedUser.value = user
   deleteModal.value = true
 }

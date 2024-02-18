@@ -49,16 +49,16 @@ import { computed, reactive, ref, watch } from 'vue'
 import UiInput from '@/components/ui/ui-input/ui-input.vue'
 import { required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
-import { IUser } from '@/views/users-view/users-view.types'
+import type { IGetUserResponse, IUser } from '@/views/users-view/users-view.types'
 import { updateUserRequest } from '@/infrastructure/users'
 import { EmitEvents } from './update-user.types'
 
 const emit = defineEmits([EmitEvents.Updated, EmitEvents.Cancel])
 
-const props = defineProps({ user: Object, modal: Boolean })
+const props = defineProps<{ user: IGetUserResponse | null; modal: boolean }>()
 
 const modalState = ref()
-const userCopy = ref<IUser>()
+const userCopy = ref<IGetUserResponse>()
 
 const loading = ref(false)
 const isSubmitted = ref(false)
@@ -87,7 +87,8 @@ function updateUser() {
     return
   }
   loading.value = true
-  updateUserRequest(userCopy.value.id, newUser)
+  const userId = userCopy.value?.id || ''
+  updateUserRequest(userId, newUser)
     .then(() => {
       emit(EmitEvents.Updated)
       cancel()
@@ -103,10 +104,10 @@ const fillUserInfo = () => {
   modalState.value = JSON.parse(JSON.stringify(props.modal))
   if (!props.user) return
   userCopy.value = JSON.parse(JSON.stringify(props.user))
-  newUser.full_name = userCopy.value.full_name
-  newUser.birth_date = userCopy.value.birth_date
-  newUser.phone = userCopy.value.phone
-  newUser.address = userCopy.value.address
+  newUser.full_name = userCopy.value?.full_name || ''
+  newUser.birth_date = userCopy.value?.birth_date || ''
+  newUser.phone = userCopy.value?.phone || ''
+  newUser.address = userCopy.value?.address || ''
 }
 
 watch(

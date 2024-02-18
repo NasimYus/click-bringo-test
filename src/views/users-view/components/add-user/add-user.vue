@@ -51,7 +51,7 @@ import { computed, reactive, ref } from 'vue'
 import UiInput from '@/components/ui/ui-input/ui-input.vue'
 import { required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
-import { IUser } from '@/views/users-view/users-view.types'
+import type { IUser } from '@/views/users-view/users-view.types'
 import { createUserRequest } from '@/infrastructure/users'
 
 const emit = defineEmits(['created'])

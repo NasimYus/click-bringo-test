@@ -4,7 +4,7 @@
     :disabled="disabled || loading"
     :class="['ui-button', variants[variant], sizes[size]]"
   >
-    <UiSpinner class="mr-1" v-if="loading" :width="22" :height="22" />
+    <UiSpinner v-if="loading" :width="22" :height="22" />
     <slot />
   </button>
 </template>
@@ -25,8 +25,7 @@ const sizes = {
 
 const variants = {
   primary: 'ui-button-primary',
-  light:
-    'ui-button-light bg-primary-200 border border-primary-300 text-primary-500 hover:bg-primary-300 active:bg-primary-400 disabled:border-none disabled:bg-primary-50 disabled:text-grey-100'
+  light: 'ui-button-light'
 }
 
 withDefaults(defineProps<TProps>(), {
